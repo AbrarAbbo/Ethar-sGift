@@ -170,13 +170,12 @@
       }
     }
 
-    function isDone(id) {
-      let doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
-      return doneExams.includes(id);
-    }
-
-   function buildCards() {
+function buildCards() {
   const doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+  const doneCards = [];
+  const notDoneCards = [];
+
+  // تصنيف الكروت حسب "تم" أو "لم يتم"
   exams.forEach((exam) => {
     const card = document.createElement('div');
     card.className = 'card';
@@ -185,12 +184,17 @@
     if (doneExams.includes(exam.id)) {
       card.classList.add('done');
       card.innerHTML += `<p style="font-weight:bold; color:#7d5ba6;">${exam.message}</p>`;
-      examsContainer.appendChild(card); // مشطوبة تنزل تحت
+      doneCards.push(card);  // إضافة الكروت المشطوبة في القائمة
     } else {
-      examsContainer.insertBefore(card, examsContainer.firstChild); // غير مشطوبة فوق
+      notDoneCards.push(card);  // إضافة الكروت غير المشطوبة في القائمة
     }
   });
+
+  // أضف الكروت المشطوبة أولاً ثم الكروت غير المشطوبة
+  doneCards.forEach(card => examsContainer.appendChild(card));
+  notDoneCards.forEach(card => examsContainer.appendChild(card));
 }
+
 
     buildCards();
     updateProgress();
