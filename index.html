@@ -190,10 +190,11 @@ function buildCards() {
     }
   });
 
-  // أضف الكروت المشطوبة أولاً ثم الكروت غير المشطوبة
-  doneCards.forEach(card => examsContainer.appendChild(card));
+  // أضف الكروت غير المشطوبة أولاً ثم الكروت المشطوبة
   notDoneCards.forEach(card => examsContainer.appendChild(card));
+  doneCards.forEach(card => examsContainer.appendChild(card));
 }
+
 
 
     buildCards();
