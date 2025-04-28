@@ -175,21 +175,22 @@
       return doneExams.includes(id);
     }
 
-    function buildCards() {
-      const doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
-      exams.forEach((exam) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<h3>${exam.subject}</h3><p>🗓️ ${exam.date}</p><button onclick=\"markDone(this.parentElement, '${exam.message}', '${exam.id}')\">✔️ تم!</button>`;
-        if (doneExams.includes(exam.id)) {
-          card.classList.add('done');
-          card.innerHTML += `<p style=\"font-weight:bold; color:#7d5ba6;\">${exam.message}</p>`;
-          examsContainer.appendChild(card);
-        } else {
-          examsContainer.appendChild(card);
-        }
-      });
+   function buildCards() {
+  const doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+  exams.forEach((exam) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<h3>${exam.subject}</h3><p>🗓️ ${exam.date}</p><button onclick=\"markDone(this.parentElement, '${exam.message}', '${exam.id}')\">✔️ تم!</button>`;
+
+    if (doneExams.includes(exam.id)) {
+      card.classList.add('done');
+      card.innerHTML += `<p style="font-weight:bold; color:#7d5ba6;">${exam.message}</p>`;
+      examsContainer.appendChild(card); // مشطوبة تنزل تحت
+    } else {
+      examsContainer.insertBefore(card, examsContainer.firstChild); // غير مشطوبة فوق
     }
+  });
+}
 
     buildCards();
     updateProgress();
