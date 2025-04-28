@@ -78,9 +78,27 @@
       0% { transform: translate(0, 0) scale(1); opacity: 1; }
       100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
     }
+
+    /* Styling for the reset button */
+    .reset-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover {
+      background-color: #ff1e1e;
+    }
   </style>
 </head>
 <body>
+  <button class="reset-btn" onclick="resetAll()">reset btn</button> <!-- Reset button -->
   <h1>جدول اختباراتك يا بطلة 🌸</h1>
   <div class="progress">
     <div id="progress-bar" class="progress-bar">0%</div>
@@ -109,22 +127,6 @@
       const progressBar = document.getElementById('progress-bar');
       progressBar.style.width = percentage + '%';
       progressBar.textContent = percentage + '%';
-
-      if (doneCount === total) {
-        let sparkleInterval = setInterval(() => {
-          for (let i = 0; i < 50; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle-particle';
-            sparkle.style.left = `${Math.random() * 100}%`;
-            sparkle.style.top = `${Math.random() * 100}%`;
-            sparkle.style.setProperty('--x', `${Math.random() * 400 - 200}px`);
-            sparkle.style.setProperty('--y', `${Math.random() * 400 - 200}px`);
-            document.body.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 1500);
-          }
-        }, 500);
-        setTimeout(() => clearInterval(sparkleInterval), 10000);
-      }
     }
 
     function showSparkles() {
@@ -142,7 +144,7 @@
 
     function markDone(card, message, id) {
       card.classList.add('done');
-      card.innerHTML += `<p style=\"font-weight:bold; color:#7d5ba6;\">${message}</p>`;
+      card.innerHTML += `<p style="font-weight:bold; color:#7d5ba6;">${message}</p>`;
       const button = card.querySelector('button');
       if (button) button.remove();
       showSparkles();
@@ -170,32 +172,38 @@
       }
     }
 
-function buildCards() {
-  const doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
-  const doneCards = [];
-  const notDoneCards = [];
-
-  // تصنيف الكروت حسب "تم" أو "لم يتم"
-  exams.forEach((exam) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `<h3>${exam.subject}</h3><p>🗓️ ${exam.date}</p><button onclick=\"markDone(this.parentElement, '${exam.message}', '${exam.id}')\">✔️ تم!</button>`;
-
-    if (doneExams.includes(exam.id)) {
-      card.classList.add('done');
-      card.innerHTML += `<p style="font-weight:bold; color:#7d5ba6;">${exam.message}</p>`;
-      doneCards.push(card);  // إضافة الكروت المشطوبة في القائمة
-    } else {
-      notDoneCards.push(card);  // إضافة الكروت غير المشطوبة في القائمة
+    function isDone(id) {
+      let doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+      return doneExams.includes(id);
     }
-  });
 
-  // أضف الكروت غير المشطوبة أولاً ثم الكروت المشطوبة
-  notDoneCards.forEach(card => examsContainer.appendChild(card));
-  doneCards.forEach(card => examsContainer.appendChild(card));
-}
+    function buildCards() {
+      const doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+      const doneCards = [];
+      const notDoneCards = [];
 
+      exams.forEach((exam) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3>${exam.subject}</h3><p>🗓️ ${exam.date}</p><button onclick="markDone(this.parentElement, '${exam.message}', '${exam.id}')">✔️ تم!</button>`;
 
+        if (doneExams.includes(exam.id)) {
+          card.classList.add('done');
+          card.innerHTML += `<p style="font-weight:bold; color:#7d5ba6;">${exam.message}</p>`;
+          doneCards.push(card);  // إضافة الكروت المشطوبة
+        } else {
+          notDoneCards.push(card);  // إضافة الكروت غير المشطوبة
+        }
+      });
+
+      notDoneCards.forEach(card => examsContainer.appendChild(card));
+      doneCards.forEach(card => examsContainer.appendChild(card)); // ضع الكروت المشطوبة في الأسفل
+    }
+
+    function resetAll() {
+      localStorage.removeItem('doneExams'); // إزالة الـ localStorage
+      window.location.reload(); // إعادة تحميل الصفحة
+    }
 
     buildCards();
     updateProgress();
