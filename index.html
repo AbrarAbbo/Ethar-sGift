@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جدول اختباراتك يا بطلة ✨</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f9f7f7;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    h1 {
+      color: #7d5ba6;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 300px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .done {
+      background-color: #d4f8e8;
+      color: #4caf50;
+    }
+    .done h3, .done p:first-of-type {
+      text-decoration: line-through;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      border: none;
+      background-color: #7d5ba6;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #5e3f8c;
+    }
+    .progress {
+      width: 80%;
+      background-color: #ddd;
+      border-radius: 20px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 20px;
+      background-color: #7d5ba6;
+      width: 0%;
+      text-align: center;
+      color: white;
+      line-height: 20px;
+      transition: width 0.3s ease;
+    }
+    .sparkle-particle {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #ffd700;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      animation: sparkle-fly 1s ease-out forwards;
+    }
+    @keyframes sparkle-fly {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>جدول اختباراتك يا بطلة 🌸</h1>
+  <div class="progress">
+    <div id="progress-bar" class="progress-bar">0%</div>
+  </div>
+  <div id="exams"></div>
+
+  <script>
+    const exams = [
+      { id: 'exam1', date: '4/26', subject: 'Pathology 7 + Spotter', message: 'واااو! خلصتي Pathology 7! حقيقي فخورة فيكِ يا بطلة 🫶🏼' },
+      { id: 'exam2', date: '4/30', subject: 'Microbiology 7', message: 'انتهيتِ من Microbiology 7! قوة وتركيز ما شاء الله عليكِ 👏🏼✨' },
+      { id: 'exam3', date: '5/1', subject: 'Medicine 7', message: 'Medicine 7 done! خطوة أقرب لحلمك يا دكتورة المستقبل 💖' },
+      { id: 'exam4', date: '5/4', subject: 'Pharmacology 7', message: 'Pharmacology 7؟ ولا أسهل عليكِ! شطّورة ومثابرة زي العادة 😍' },
+      { id: 'exam5', date: '5/5', subject: 'Medicine 8', message: 'يا سلام! Medicine 8 صار من الماضي! كملي بنفس الحماس 🌸' },
+      { id: 'exam6', date: '5/8', subject: 'Pathology 8 + Spotter', message: 'Pathology 8 + Spotter؟ easy peasy عليكِ يا جميلة! 🌟' },
+      { id: 'exam7', date: '5/10', subject: 'Surgery 8', message: 'سيرجري 8 خلص؟ واااو! برافو عليكِ يا أقوى واحدة 🙌🏼' },
+      { id: 'exam8', date: '5/12', subject: 'Microbiology 8', message: 'Microbiology 8 done! يوم ورا يوم تزدادين إبداع 💐' },
+      { id: 'exam9', date: '5/15', subject: 'Pharmacology 8', message: 'آخر اختبار! Pharmacology 8 ✅ مبروووك يا بطلة، proud of you 🥳' }
+    ];
+
+    const examsContainer = document.getElementById('exams');
+
+    function updateProgress() {
+      const doneCount = document.querySelectorAll('.done').length;
+      const total = exams.length;
+      const percentage = Math.round((doneCount / total) * 100);
+      const progressBar = document.getElementById('progress-bar');
+      progressBar.style.width = percentage + '%';
+      progressBar.textContent = percentage + '%';
+
+      if (doneCount === total) {
+        let sparkleInterval = setInterval(() => {
+          for (let i = 0; i < 50; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle-particle';
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            sparkle.style.setProperty('--x', `${Math.random() * 400 - 200}px`);
+            sparkle.style.setProperty('--y', `${Math.random() * 400 - 200}px`);
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1500);
+          }
+        }, 500);
+        setTimeout(() => clearInterval(sparkleInterval), 10000);
+      }
+    }
+
+    function showSparkles() {
+      for (let i = 0; i < 30; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle-particle';
+        sparkle.style.left = '50%';
+        sparkle.style.top = '50%';
+        sparkle.style.setProperty('--x', `${Math.random() * 400 - 200}px`);
+        sparkle.style.setProperty('--y', `${Math.random() * 400 - 200}px`);
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+      }
+    }
+
+    function markDone(card, message, id) {
+      card.classList.add('done');
+      card.innerHTML += `<p style=\"font-weight:bold; color:#7d5ba6;\">${message}</p>`;
+      const button = card.querySelector('button');
+      if (button) button.remove();
+      showSparkles();
+      saveDone(id);
+      updateProgress();
+      setTimeout(() => {
+        card.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+        card.style.transform = 'translateY(30px)';
+        card.style.opacity = '0';
+        setTimeout(() => {
+          const parent = card.parentElement;
+          card.style.transform = 'translateY(0)';
+          card.style.opacity = '1';
+          parent.removeChild(card);
+          parent.appendChild(card);
+        }, 800);
+      }, 5000);
+    }
+
+    function saveDone(id) {
+      let doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+      if (!doneExams.includes(id)) {
+        doneExams.push(id);
+        localStorage.setItem('doneExams', JSON.stringify(doneExams));
+      }
+    }
+
+    function isDone(id) {
+      let doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+      return doneExams.includes(id);
+    }
+
+    function buildCards() {
+      const doneExams = JSON.parse(localStorage.getItem('doneExams')) || [];
+      exams.forEach((exam) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3>${exam.subject}</h3><p>🗓️ ${exam.date}</p><button onclick=\"markDone(this.parentElement, '${exam.message}', '${exam.id}')\">✔️ تم!</button>`;
+        if (doneExams.includes(exam.id)) {
+          card.classList.add('done');
+          card.innerHTML += `<p style=\"font-weight:bold; color:#7d5ba6;\">${exam.message}</p>`;
+          examsContainer.appendChild(card);
+        } else {
+          examsContainer.insertBefore(card, examsContainer.firstChild);
+        }
+      });
+    }
+
+    buildCards();
+    updateProgress();
+  </script>
+</body>
+</html>
