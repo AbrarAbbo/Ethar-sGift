@@ -186,7 +186,7 @@
           card.innerHTML += `<p style=\"font-weight:bold; color:#7d5ba6;\">${exam.message}</p>`;
           examsContainer.appendChild(card);
         } else {
-          examsContainer.insertBefore(card, examsContainer.firstChild);
+          examsContainer.appendChild(card);
         }
       });
     }
